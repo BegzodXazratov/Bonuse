@@ -37,6 +37,7 @@ canvas {
     background: #181c14;
 }
 
+/* Base screen overlay style */
 .screen {
     position: absolute;
     top: 0;
@@ -48,18 +49,16 @@ canvas {
     align-items: center;
     background: rgba(12, 12, 12, 0.85);
     z-index: 10;
+    opacity: 1;
+    pointer-events: auto;
     transition: opacity 0.2s ease;
 }
 
+/* Hidden state must override everything properly */
 .screen.hidden {
     display: none !important;
-    opacity: 0;
-    pointer-events: none;
-}
-
-.screen.active {
-    display: flex !important;
-    opacity: 1;
+    opacity: 0 !important;
+    pointer-events: none !important;
 }
 
 .menu-box {
