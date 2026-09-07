@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Bonus Run - Retro Arcade Game</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="game-container">
+        <canvas id="gameCanvas"></canvas>
+
+        <!-- HUD -->
+        <div id="hud" class="screen hidden">
+            <div class="hud-left">
+                <span id="hud-name">PLAYER: ALFRED</span>
+                <span id="hud-score">SCORE: 0</span>
+                <span id="hud-coins">COINS: 0</span>
+            </div>
+            <div class="hud-right">
+                <button id="pause-btn" class="retro-btn icon-btn">⏸</button>
+            </div>
+        </div>
+
+        <!-- MOBILE CONTROLS -->
+        <div id="mobile-controls" class="screen hidden">
+            <div class="control-group-left">
+                <button id="btn-left" class="touch-btn">◀</button>
+                <button id="btn-right" class="touch-btn">▶</button>
+            </div>
+            <div class="control-group-right">
+                <button id="btn-jump" class="touch-btn">▲</button>
+            </div>
+        </div>
+
+        <!-- START SCREEN -->
+        <div id="screen-start" class="screen active">
+            <div class="menu-box">
+                <h1 class="game-title">BONUS RUN</h1>
+                <p class="game-subtitle">A RETRO ARCADE ADVENTURE</p>
+                <div class="menu-buttons">
+                    <button id="menu-play-btn" class="retro-btn primary">PLAY GAME</button>
+                    <button id="menu-shop-btn" class="retro-btn">ABILITY SHOP</button>
+                    <button id="menu-settings-btn" class="retro-btn">SETTINGS</button>
+                </div>
+                <div class="footer-hint">PRESS START OR USE TOUCH</div>
+            </div>
+        </div>
+
+        <!-- NAME INPUT SCREEN -->
+        <div id="screen-name" class="screen hidden">
+            <div class="menu-box">
+                <h2>PLAYER IDENTIFICATION</h2>
+                <p>ENTER YOUR CODENAME:</p>
+                <input type="text" id="player-name-input" maxlength="12" placeholder="ALI" autocomplete="off" />
+                <button id="name-submit-btn" class="retro-btn primary">START RUN</button>
+            </div>
+        </div>
+
+        <!-- PAUSE SCREEN -->
+        <div id="screen-pause" class="screen hidden">
+            <div class="menu-box">
+                <h2>GAME PAUSED</h2>
+                <div class="menu-buttons">
+                    <button id="pause-resume-btn" class="retro-btn primary">RESUME</button>
+                    <button id="pause-shop-btn" class="retro-btn">SHOP</button>
+                    <button id="pause-restart-btn" class="retro-btn">RESTART</button>
+                    <button id="pause-menu-btn" class="retro-btn">MAIN MENU</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- SHOP SCREEN -->
+        <div id="screen-shop" class="screen hidden">
+            <div class="menu-box shop-box">
+                <h2>ABILITY SHOP</h2>
+                <div class="shop-coins-display">COINS: <span id="shop-coins-val">0</span></div>
+                <div class="shop-items-list">
+                    <!-- Speed Item -->
+                    <div class="shop-item">
+                        <div class="item-info">
+                            <h3>⚡ SPEED BOOST</h3>
+                            <p>Increases movement velocity.</p>
+                            <span id="shop-speed-lvl">Level: 1</span>
+                        </div>
+                        <button id="buy-speed-btn" class="retro-btn small">UPGRADE (50)</button>
+                    </div>
+                    <!-- Double Jump Item -->
+                    <div class="shop-item">
+                        <div class="item-info">
+                            <h3>🪽 DOUBLE JUMP</h3>
+                            <p>Jump twice in mid-air.</p>
+                            <span id="shop-djump-status">LOCKED</span>
+                        </div>
+                        <button id="buy-djump-btn" class="retro-btn small">UNLOCK (100)</button>
+                    </div>
+                    <!-- Shield Item -->
+                    <div class="shop-item">
+                        <div class="item-info">
+                            <h3>🛡 SHIELD</h3>
+                            <p>Protects from 1 obstacle hit.</p>
+                            <span id="shop-shield-status">READY: 0</span>
+                        </div>
+                        <button id="buy-shield-btn" class="retro-btn small">BUY (150)</button>
+                    </div>
+                    <!-- Magnet Item -->
+                    <div class="shop-item">
+                        <div class="item-info">
+                            <h3>🧲 COIN MAGNET</h3>
+                            <p>Automatically attracts coins.</p>
+                            <span id="shop-magnet-status">LOCKED</span>
+                        </div>
+                        <button id="buy-magnet-btn" class="retro-btn small">UNLOCK (200)</button>
+                    </div>
+                </div>
+                <button id="shop-close-btn" class="retro-btn primary">BACK</button>
+            </div>
+        </div>
+
+        <!-- SETTINGS SCREEN -->
+        <div id="screen-settings" class="screen hidden">
+            <div class="menu-box">
+                <h2>SETTINGS</h2>
+                <div class="setting-row">
+                    <span>PLAYER NAME:</span>
+                    <span id="settings-current-name">ALI</span>
+                    <button id="change-name-btn" class="retro-btn small">EDIT</button>
+                </div>
+                <div class="setting-row">
+                    <span>SOUND FX:</span>
+                    <button id="toggle-sound-btn" class="retro-btn small">ON</button>
+                </div>
+                <div class="setting-row">
+                    <span>MUSIC:</span>
+                    <button id="toggle-music-btn" class="retro-btn small">ON</button>
+                </div>
+                <button id="settings-back-btn" class="retro-btn primary">BACK</button>
+            </div>
+        </div>
+
+        <!-- GAME OVER SCREEN -->
+        <div id="screen-gameover" class="screen hidden">
+            <div class="menu-box">
+                <h2 class="danger">GAME OVER</h2>
+                <p id="go-reason">CRASHED INTO OBSTACLE</p>
+                <div class="stats-box">
+                    <div>PLAYER: <span id="go-player">ALI</span></div>
+                    <div>SCORE: <span id="go-score">0</span></div>
+                    <div>COINS COLLECTED: <span id="go-coins">0</span></div>
+                    <div id="go-highscore-notice" class="highlight hidden">NEW HIGH SCORE!</div>
+                </div>
+                <div class="menu-buttons">
+                    <button id="go-retry-btn" class="retro-btn primary">RETRY</button>
+                    <button id="go-menu-btn" class="retro-btn">MAIN MENU</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- LEVEL COMPLETE SCREEN -->
+        <div id="screen-victory" class="screen hidden">
+            <div class="menu-box">
+                <h2 class="success">LEVEL COMPLETE!</h2>
+                <div class="stats-box">
+                    <div>PLAYER: <span id="vic-player">ALI</span></div>
+                    <div>SCORE: <span id="vic-score">0</span></div>
+                    <div>COINS COLLECTED: <span id="vic-coins">0</span></div>
+                    <div>FINISH BONUS: <span id="vic-bonus">+500</span></div>
+                    <div class="total-score">TOTAL: <span id="vic-total">0</span></div>
+                </div>
+                <div class="menu-buttons">
+                    <button id="vic-retry-btn" class="retro-btn primary">PLAY AGAIN</button>
+                    <button id="vic-shop-btn" class="retro-btn">SHOP</button>
+                    <button id="vic-menu-btn" class="retro-btn">MAIN MENU</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+</html>
